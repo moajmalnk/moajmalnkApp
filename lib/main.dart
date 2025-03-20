@@ -9,10 +9,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_file/open_file.dart';
 
+/// Main entry point of the application
 void main() {
   runApp(const MyApp());
 }
 
+/// Root widget of the application
+/// Configures the app theme and orientation settings
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -38,6 +41,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// Main page widget that handles URL opening and web view functionality
 class OpenUrlPage extends StatefulWidget {
   const OpenUrlPage({super.key});
 
@@ -45,12 +49,15 @@ class OpenUrlPage extends StatefulWidget {
   State<OpenUrlPage> createState() => _OpenUrlPageState();
 }
 
+/// State management for OpenUrlPage
+/// Handles web view controller, navigation, and user interactions
 class _OpenUrlPageState extends State<OpenUrlPage> {
   late final WebViewController _controller;
   DateTime? _lastBackPressed;
   static const String _homeUrl = 'https://moajmalnk.in/';
   int _selectedIndex = 0;
 
+  /// Initializes the WebView controller and sets up navigation handlers
   @override
   void initState() {
     super.initState();
@@ -125,10 +132,13 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     }
   }
 
+  /// Handles the start of page loading
   void _handlePageStart(String url) {
     setState(() {});
   }
 
+  /// Handles navigation requests and intercepts specific URL schemes
+  /// Returns NavigationDecision.prevent for custom URL schemes
   Future<NavigationDecision> _handleNavigationRequest(
       NavigationRequest request) async {
     final String url = request.url;
@@ -146,10 +156,12 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     return NavigationDecision.navigate;
   }
 
+  /// Launches URLs using the system's default handlers
   Future<void> _launchUrl(String url) async {
     await launchUrl(Uri.parse(url));
   }
 
+  /// Handles back button press with double-tap to exit functionality
   Future<bool> _onWillPop() async {
     if (await _controller.canGoBack()) {
       await _controller.goBack();
@@ -165,6 +177,7 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     return _showExitConfirmationDialog();
   }
 
+  /// Shows a snackbar indicating the user should tap again to exit
   void _showExitSnackbar() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -178,6 +191,8 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     );
   }
 
+  /// Shows an exit confirmation dialog
+  /// Returns true if user confirms exit, false otherwise
   Future<bool> _showExitConfirmationDialog() async {
     return await showDialog(
       context: context,
@@ -391,6 +406,7 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     );
   }
 
+  /// Builds a navigation item for the bottom bar
   Widget _buildNavItem(
       IconData icon, String label, int index, VoidCallback onTap) {
     return InkWell(
@@ -450,6 +466,7 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     );
   }
 
+  /// Shows the contact options bottom sheet
   void _showContactOptions() {
     showModalBottomSheet(
       context: context,
@@ -565,6 +582,7 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     );
   }
 
+  /// Builds a contact action button with gradient background
   Widget _buildContactButton(
       String label, IconData icon, Color color, VoidCallback onTap) {
     return InkWell(
@@ -604,6 +622,7 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     );
   }
 
+  /// Shows a confirmation dialog before performing contact actions
   Future<void> _showConfirmationDialog(
       String title, String message, VoidCallback onConfirm) async {
     return showDialog(
@@ -663,6 +682,7 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     );
   }
 
+  /// Builds a styled button for dialogs
   Widget _buildDialogButton(String label, Color color, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
@@ -688,6 +708,7 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     );
   }
 
+  /// Builds a contact information row with copy functionality
   Widget _buildContactInfo(IconData icon, String text) {
     return InkWell(
       onTap: () {
@@ -725,6 +746,7 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     );
   }
 
+  /// Shows a temporary overlay message when text is copied
   void _showCopiedMessage(String text) {
     final overlay = Overlay.of(context);
     final overlayEntry = OverlayEntry(
@@ -763,6 +785,7 @@ class _OpenUrlPageState extends State<OpenUrlPage> {
     });
   }
 
+  /// Downloads and opens the CV PDF file
   void _downloadCV() async {
     final url = 'https://moajmalnk.in/assets/pdf/moajmalnk-cv.pdf';
 
